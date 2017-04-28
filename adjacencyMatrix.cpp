@@ -17,18 +17,18 @@ bool adjacencyMatrix::Get(int id1, int id2){
  * \param[in]   id1 ID of the first node
  * \param[in]   id2 ID of the second node
  */
-    int id1_s=max(id1,id2);
-    int id2_s=min(id1,id2);
+    	int id1_s=max(id1,id2);
+	int id2_s=min(id1,id2);
 	int n=mat_.size();
 	if( (id1_s>n-1) || (id2_s<0) ){
-        return false;
-	}else{
-        int val=mat_.at(id1_s).at(id2_s);
-        if (val==0){
-            return false;
-        } else {
-            return true;
-        }
+        	return false;
+	} else {
+        	int val=mat_.at(id1_s).at(id2_s);
+        	if (val==0){
+            		return false;
+        	} else {
+            		return true;
+        	}
 	}
 }
 
@@ -39,23 +39,23 @@ bool adjacencyMatrix::Get(int id1, int id2, int& ide){
  * \param[in]   id2 ID of the second node
  * \param[out]  ide edge ID, if it exists in the adjacency matrix
  */
-    int id1_s=max(id1,id2);
-    int id2_s=min(id1,id2);
+	int id1_s=max(id1,id2);
+	int id2_s=min(id1,id2);
 	int n=mat_.size();
 	if( (id1_s>n-1) || (id2_s<0) ){
-        return false;
-	}else{
-        int val=mat_.at(id1_s).at(id2_s);
-        if (val==0){
-            return false;
-        } else {
-            if(id1>id2){
-                ide=val;
-            }else{
-                ide=-val;
-            }
-            return true;
-        }
+        	return false;
+	} else {
+		int val=mat_.at(id1_s).at(id2_s);
+		if (val==0){
+			return false;
+        	} else {
+			if(id1>=id2){
+				ide=val;
+			}else{
+				ide=-val;
+			}
+			return true;
+		}
 	}
 }
 
@@ -80,23 +80,23 @@ int adjacencyMatrix::Set(int id1,int id2){
  * \param[in] id1 ID of the first node
  * \param[in] id2 ID of the second node
  */
-    int ide;
-    if ( (id1<0) || (id2<0) ){ // Any negative input index
-        max_id_++;
-        ide=max_id_;
-    } else {                    // Both positive
-        if( !( Get(id1,id2,ide) ) ){    // If the entry already exists, it just gets the edge ID
-            max_id_++;
-            if(id1>id2){
-                resize(mat_,id1+1);
-                mat_.at(id1).at(id2)=max_id_;
-            }else{
-                resize(mat_,id2+1);
-                mat_.at(id2).at(id1)=-max_id_;
-            }
-        ide=max_id_;
-        }
-    }
+	int ide;
+	if ( (id1<0) || (id2<0) ){ // Any negative input index
+		max_id_++;
+		ide=max_id_;
+	} else {                    // Both positive
+		if( !( Get(id1,id2,ide) ) ){    // If the entry already exists, it just gets the edge ID
+			max_id_++;
+			if(id1>=id2){
+				resize(mat_,id1+1);
+				mat_.at(id1).at(id2)=max_id_;
+			} else {
+				resize(mat_,id2+1);
+				mat_.at(id2).at(id1)=-max_id_;
+			}
+			ide=max_id_;
+		}
+	}
 	return ide;
 }
 

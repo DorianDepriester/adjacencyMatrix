@@ -32,7 +32,7 @@ Check if an edge exists between node id1 and node id2 and get the corresponding 
 Since the oriented adjacency matrix are skew-symmetric, data are stored as upper triangular matrices, in a sake of memory.
     
 ## Notes
-#### Self loop
+### Self loop
 Dispite the skew-symmetry, this class allows to define self loop. In this special case, no symmetry is introduced. Thus, the diagonal is always positive.
 
 ### Negative node indices

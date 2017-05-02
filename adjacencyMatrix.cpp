@@ -1,5 +1,6 @@
 #include "adjacencyMatrix.h"
 #include <vector>
+#include <iostream>
 using namespace std;
 
 
@@ -8,8 +9,33 @@ adjacencyMatrix::adjacencyMatrix()
 /**
  * Constructor
  */
-    max_id_=0;
+	max_id_=0;
 }
+
+adjacencyMatrix::adjacencyMatrix(int n)
+{
+/**
+ * Constructor
+ * \param[in] n Original size of the matrix.
+ */
+	resize(n);
+	max_id_=0;
+}
+
+void adjacencyMatrix::resize(int n_new){
+/**
+ * Enlarges the adjacency matrix.
+ * \param[in] New size of the matrix
+ */
+	int n_old=mat_.size();
+	if(n_new>n_old){
+		for(int i=n_old;i<n_new;i++){
+			vector<int> bottom(i,0);
+			mat_.push_back(bottom);
+		}
+	}
+}
+
 
 bool adjacencyMatrix::Get(int id1, int id2){
 /**
@@ -17,19 +43,8 @@ bool adjacencyMatrix::Get(int id1, int id2){
  * \param[in]   id1 ID of the first node
  * \param[in]   id2 ID of the second node
  */
-    	int id1_s=max(id1,id2);
-	int id2_s=min(id1,id2);
-	int n=mat_.size();
-	if( (id1_s>n-1) || (id2_s<0) ){
-        	return false;
-	} else {
-        	int val=mat_.at(id1_s).at(id2_s);
-        	if (val==0){
-            		return false;
-        	} else {
-            		return true;
-        	}
-	}
+	int id;
+	return Get(id1,id2,id);
 }
 
 bool adjacencyMatrix::Get(int id1, int id2, int& ide){
@@ -41,36 +56,22 @@ bool adjacencyMatrix::Get(int id1, int id2, int& ide){
  */
 	int id1_s=max(id1,id2);
 	int id2_s=min(id1,id2);
-	int n=mat_.size();
-	if( (id1_s>n-1) || (id2_s<0) ){
-        	return false;
+	int n=size();
+	if( (id1_s>n-1) || (id2_s<0) || (id1==id2) ){
+		ide=0;
 	} else {
 		int val=mat_.at(id1_s).at(id2_s);
-		if (val==0){
-			return false;
-        	} else {
-			if(id1>=id2){
-				ide=val;
-			}else{
-				ide=-val;
-			}
-			return true;
+		if(id1>=id2){
+			ide=val;
+		}else{
+			ide=-val;
 		}
 	}
-}
-
-void resize(vector<vector<int> >& mat,int nNew){
-/**
- * Enlarges the adjacency matrix.
- * \param[in,out] mat matrix to be enlarged
- * \param[in] New size of the matrix
- */
-    int nOld=mat.size();
-    int i;
-    for(i=nOld;i<nNew;i++){
-        vector<int> bottom(i,0);
-        mat.push_back(bottom);
-    }
+	if (ide==0){
+		return false;
+	} else {
+		return true;
+	}
 }
 
 int adjacencyMatrix::Set(int id1,int id2){
@@ -81,17 +82,17 @@ int adjacencyMatrix::Set(int id1,int id2){
  * \param[in] id2 ID of the second node
  */
 	int ide;
-	if ( (id1<0) || (id2<0) ){ // Any negative input index
+	if ( (id1<0) || (id2<0) || (id1==id2) ){// Any negative input index, or trying to add self loop (forbidden in skew-matrices)
 		max_id_++;
 		ide=max_id_;
-	} else {                    // Both positive
-		if( !( Get(id1,id2,ide) ) ){    // If the entry already exists, it just gets the edge ID
+	} else {								// Both positive
+		if( !( Get(id1,id2,ide) ) ){		// If the entry already exists, it just gets the edge ID
 			max_id_++;
 			if(id1>=id2){
-				resize(mat_,id1+1);
+				resize(id1+1);
 				mat_.at(id1).at(id2)=max_id_;
 			} else {
-				resize(mat_,id2+1);
+				resize(id2+1);
 				mat_.at(id2).at(id1)=-max_id_;
 			}
 			ide=max_id_;
@@ -106,6 +107,21 @@ int adjacencyMatrix::size(){
  * Gets the size of the adjacency matrix.
  */
     return mat_.size();
+}
+
+void adjacencyMatrix::print(){
+/**
+ * Prints the adjacency matrix
+ */
+    int n=size();
+	int id;
+	for(int i=0;i<n;i++){
+		for(int j=0;j<n;j++){
+			Get(i,j,id);
+			cout<<id<<"\t";
+		}
+		cout<<endl;
+	}
 }
 
 adjacencyMatrix::~adjacencyMatrix()

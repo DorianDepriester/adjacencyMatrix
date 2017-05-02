@@ -13,7 +13,7 @@ adjacencyMatrix::adjacencyMatrix()
 
 bool adjacencyMatrix::Get(int id1, int id2){
 /**
- * Gets the id of the edges connecting two nodes in the graph. Returns true if the edge exists, false otherwise.
+ * Checks if two nodes are connected. Returns true if yes, false otherwise.
  * \param[in]   id1 ID of the first node
  * \param[in]   id2 ID of the second node
  */
@@ -34,7 +34,7 @@ bool adjacencyMatrix::Get(int id1, int id2){
 
 bool adjacencyMatrix::Get(int id1, int id2, int& ide){
 /**
- * Gets the id of the edges connecting two nodes in the graph. Returns true if the edge exists, false otherwise.
+ * Gets the id of the edge connecting two nodes in the graph. Returns true if the edge exists, false otherwise.
  * \param[in]   id1 ID of the first node
  * \param[in]   id2 ID of the second node
  * \param[out]  ide edge ID, if it exists in the adjacency matrix

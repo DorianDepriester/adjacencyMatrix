@@ -12,10 +12,18 @@ class adjacencyMatrix
         /**
         * Constructor
         */
+        adjacencyMatrix(int);
+        /**
+        * Constructor, giving the original size of the matrix.
+        */
         virtual ~adjacencyMatrix();
         /**
         * Destructor
         */
+		void resize(int);
+		/**
+		* Change the size of the adjacency matrix.
+		**/
         bool Get(int id1, int id2);
         /**
         * Returns true if the entry exists in the adjacency matrix.
@@ -31,6 +39,10 @@ class adjacencyMatrix
         int size();
         /**
         * Returns the size of the adjacency matrix (number of columns).
+        */
+        void print();
+        /**
+        * Prints out the content of the adjacency matrix.
         */
     private:
         vector<vector<int> > mat_;

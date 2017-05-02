@@ -1,5 +1,5 @@
 # adjacencyMatrix
-Simple and lightweight oriented adjancency matrix implementation for C++.
+Simple and lightweight oriented adjancency matrix implementation for C++. 
 
 ## How to use
 ### Install
@@ -8,28 +8,30 @@ Just put the `.h` and `.cpp` files in the working directory, and add the followi
     #include "adjacencyMatrix.h"
 
 ## Examples
-Create a new instance of adjacency matrix:
+### Create a new instance of adjacency matrix:
 
     adjacencyMatrix adj_mat;
+    
+Note that the size of the matrix is not mandatory here, since it will be dynamically computed (see below).    
 
-Add a new entry in the adjacency matrix:
+### Add a new entry in the adjacency matrix:
 
     int id1=1,id2=2;
     adj_mat.Set(id1,id2);
     
-A unique ID is automatically associated to the new edge (starting from 1, incrementing by 1 each time a new entry is added).
+A unique ID is automatically associated to the new edge (starting from 1, incrementing by 1 each time a new entry is added). If necessary, the size of the matrix is dynamically increased.
     
-Check if an edge exists between node id1 and node id2:
+### Check if an edge exists between node id1 and node id2:
 
     adj_mat.Get(id1,id2);
     
-Check if an edge exists between node id1 and node id2 and get the corresponding edge ID:
+### Check if an edge exists between node id1 and node id2 and get the corresponding edge ID:
 
     int ide;
     adj_mat.Get(id1,id2,ide);
     
 ## How it works
-Since the oriented adjacency matrix are skew-symmetric, data are stored as upper triangular matrices, in a sake of memory.
+Since the oriented adjacency matrices are skew-symmetric, data are stored as lower triangular matrices, in a sake of memory.
     
 ## Notes
 ### Self loop

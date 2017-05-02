@@ -12,7 +12,9 @@ Just put the `.h` and `.cpp` files in the working directory, and add the followi
 
     adjacencyMatrix adj_mat;
     
-Note that the size of the matrix is not mandatory here, since it will be dynamically computed (see below).    
+Note that the size of the matrix is not mandatory here, since it will be dynamically computed (see below). If the size of the matrix is already known, it can passed to the constructor:
+
+    adjacencyMatrix adj_mat(7);
 
 ### Add a new entry in the adjacency matrix
 
@@ -30,15 +32,19 @@ A unique ID is automatically associated to the new edge (starting from 1, increm
     int ide;
     adj_mat.Get(id1,id2,ide);
     
+### Display the adjacency matrix
+
+    adj_mat.print();
+
 ## How it works
 Since the oriented adjacency matrices are skew-symmetric, data are stored as lower triangular matrices, in a sake of memory.
     
 ## Notes
 ### Self loop
-Dispite the skew-symmetry, this class allows to define self loop. In this special case, no symmetry is introduced. Thus, the diagonal is always positive.
+Because of the skew-symmetry, self loops are forbidden in oriented adjacency matrices. Hence, the diagonal is always zero.
 
 ### Negative node indices
-If any input argument of `Set` is negative, no entry is added to the matrix. Still, the maximum edge ID is incremented.
+If any input argument of `Set` is negative, no entry is added to the matrix. Still, the maximum edge ID is incremented. The same behaviour applies for equal indices (see above).
 
 ### Purpose
 The class was designed for the [voroGmsh](https://github.com/DorianDepriester/voroGmsh "voroGmsh on GitHub") class.

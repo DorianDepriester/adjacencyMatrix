@@ -25,18 +25,18 @@ Note that the size of the matrix is not mandatory here, since it will be dynamic
 ### Add a new entry in the adjacency matrix
 
     int id1=1,id2=2;
-    adj_mat.Set(id1,id2);
+    int ide=adj_mat.add(id1,id2);
     
 A unique ID is automatically associated to the new edge (starting from 1, incrementing by 1 each time a new entry is added). If necessary, the size of the matrix is dynamically increased.
     
 ### Check if an edge exists between node id1 and node id2
 
-    adj_mat.Get(id1,id2);
+    adj_mat.get(id1,id2);
     
 ### Check if an edge exists between node id1 and node id2 and get the corresponding edge ID
 
     int ide;
-    adj_mat.Get(id1,id2,ide);
+    adj_mat.get(id1,id2,ide);
     
 ### Display the adjacency matrix
 

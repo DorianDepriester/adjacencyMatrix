@@ -1,5 +1,11 @@
 # adjacencyMatrix
-Simple and lightweight oriented adjancency matrix implementation for C++. 
+Simple and lightweight C++ implementation for oriented adjancency matrices.
+
+## What's that?
+> In graph theory and computer science, an adjacency matrix is a square matrix used to represent a finite graph. The elements of the matrix indicate whether pairs of vertices are adjacent or not in the graph.
+> -- [Wikipedia](https://en.wikipedia.org/wiki/Adjacency_matrix)
+
+The original graph consists in nodes (aka vertices), connected to others by a set of edges. In directed graphs, the so-called oriented adjacency matrix indicates wheter each edge is walked by forward or backward; hence, it is skew-symmetric.
 
 ## How to use
 ### Install

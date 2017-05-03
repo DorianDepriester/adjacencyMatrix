@@ -24,17 +24,21 @@ class adjacencyMatrix
 		/**
 		* Change the size of the adjacency matrix.
 		**/
-        bool Get(int id1, int id2);
+        bool get(int id1, int id2);
         /**
         * Returns true if the entry exists in the adjacency matrix.
         */
-        bool Get(int id1, int id2, int&);
+        bool get(int id1, int id2, int&);
         /**
         * Returns true if the entry exists in the adjacency matrix and gives the ID of the existing entry.
         */
-        int Set(int id1, int id2);
+        int add(int id1, int id2);
         /**
         * Add a new entry to the adjacency matrix and returns its ID.
+        */
+        void del(int id1, int id2);
+        /**
+        * Deletes an entry in the adjacency matrix.
         */
         int size();
         /**

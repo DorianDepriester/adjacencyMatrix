@@ -17,6 +17,10 @@ Just put the `.h` and `.cpp` files in the working directory, and add the followi
 ### Create a new instance of adjacency matrix
 
     adjacencyMatrix adj_mat;
+    
+Note that the size of the matrix is not mandatory here, since it will be dynamically computed (see below). If the size of the matrix is already known, it can passed to the constructor:
+
+    adjacencyMatrix adj_mat(7);
 
 ### Add a new entry in the adjacency matrix
 
@@ -39,7 +43,7 @@ A unique ID is automatically associated to the new edge (starting from 1, increm
     adj_mat.print();
 
 ## How it works
-In a sake of memory, data are stored as sparse matrices. It allows to deal with numerous nodes with low connectivity.
+Since the oriented adjacency matrices are skew-symmetric, data are stored as lower triangular matrices, in a sake of memory.
     
 ## Notes
 ### Self loop

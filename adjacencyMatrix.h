@@ -12,10 +12,18 @@ class adjacencyMatrix
         /**
         * Constructor
         */
+        adjacencyMatrix(int);
+        /**
+        * Constructor, giving the original size of the matrix.
+        */
         virtual ~adjacencyMatrix();
         /**
         * Destructor
         */
+		void resize(int);
+		/**
+		* Change the size of the adjacency matrix.
+		**/
         bool get(int id1, int id2);
         /**
         * Returns true if the entry exists in the adjacency matrix.
@@ -41,9 +49,8 @@ class adjacencyMatrix
         * Prints out the content of the adjacency matrix.
         */
     private:
+        vector<vector<int> > mat_;
         int max_id_;
-        vector<int> inds_;
-        vector<int> edgeIDs_;
 };
 
 #endif // ADJACENCYMATRIX_H

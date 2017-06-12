@@ -1,36 +1,7 @@
 #include "adjacencyMatrix.h"
 #include <vector>
 #include <iostream>
-#include <algorithm>
-#include <math.h>
 using namespace std;
-
-
-bool findInVect(vector<int> vect, int value, int& idx){
-    std::vector<int>::iterator it;
-    it = find (vect.begin(), vect.end(), value);
-    if (it == vect.end()){
-        return false;
-    }else{
-        idx=it-vect.begin();
-        return true;
-    }
-}
-
-int sub2ind(int i, int j){
-    int ind;
-    if(i<j){
-        ind=j*(j-1)/2+i;
-    }else{
-        ind=i*(i-1)/2+j;
-    }
-    return ind;
-}
-
-void ind2sub(int& i, int& j, int ind){
-    j=floor(0.5+sqrt(8.0*ind+1)/2);
-    i=ind-(j*(j-3)/2+1);
-}
 
 
 adjacencyMatrix::adjacencyMatrix()
@@ -41,6 +12,34 @@ adjacencyMatrix::adjacencyMatrix()
 	max_id_=0;
 }
 
+adjacencyMatrix::adjacencyMatrix(int n)
+{
+/**
+ * Constructor
+ * \param[in] n Original size of the matrix.
+ */
+	resize(n);
+	max_id_=0;
+}
+
+void adjacencyMatrix::resize(int n_new){
+/**
+ * Resizes the matrix so that it contains n vertices.
+ * \param[in] n_new New size of the matrix
+ */
+	int n_old=size();
+	if(n_new>n_old){
+		for(int i=n_old;i<n_new;i++){	// Enlarge the matrix
+			vector<int> bottom(i,0);
+			mat_.push_back(bottom);
+		}
+	} else if(n_new<n_old) {			// Shrink the matrix	
+		mat_.resize(n_new);
+		for(int i=0;i<n_new;i++){
+			mat_.at(i).resize(n_new-1);
+		}
+	}
+}
 
 
 bool adjacencyMatrix::get(int id1, int id2){
@@ -58,29 +57,25 @@ bool adjacencyMatrix::get(int id1, int id2, int& ide){
  * Gets the id of the edge connecting two nodes in the graph. Returns true if the edge exists, false otherwise.
  * \param[in]   id1 ID of the first node
  * \param[in]   id2 ID of the second node
- * \param[out]  ide edge ID, if it exists in the adjacency matrix (0 otherwise)
+ * \param[out]  ide edge ID, if it exists in the adjacency matrix
  */
-	int id1_s=min(id1,id2);
-	int id2_s=max(id1,id2);
-	if( (id1_s<0) || (id1==id2) ){
+	int id1_s=max(id1,id2);
+	int id2_s=min(id1,id2);
+	int n=size();
+	if( (id1_s>n-1) || (id2_s<0) || (id1==id2) ){
 		ide=0;
 	} else {
-        int i;
-        int ind=sub2ind(id1_s,id2_s);
-        if(findInVect(inds_,ind,i)){
-            if(id1<id2){
-                ide=edgeIDs_.at(i);
-            }else{
-                ide=-edgeIDs_.at(i);
-            }
-        } else {
-            ide=0;
-        }
+		int val=mat_.at(id1_s).at(id2_s);
+		if(id1>=id2){
+			ide=val;
+		}else{
+			ide=-val;
+		}
 	}
-	if(ide==0){
-        return false;
-	}else{
-        return true;
+	if (ide==0){
+		return false;
+	} else {
+		return true;
 	}
 }
 
@@ -92,19 +87,22 @@ int adjacencyMatrix::add(int id1,int id2){
  * \param[in] id2 ID of the second node
  */
 	int ide;
-	int id1_s=min(id1,id2);
-	int id2_s=max(id1,id2);
-	if ( (id1_s<0) || (id1==id2) ){ // Any negative input index, or trying to add self loop (forbidden in skew-matrices)
+	int n=size();
+	int id1_s=max(id1,id2);
+	int id2_s=min(id1,id2);
+	if ( (id2_s<0) || (id1==id2) ){// Any negative input index, or trying to add self loop (forbidden in skew-matrices)
 		max_id_++;
 		ide=max_id_;
-	} else {                        // Both positive and different to each other
-		if( !( get(id1,id2,ide) ) ){    // If the entry already exists, just get the edge ID; new edge otherwise
+	} else {								// Both positive and different to each other
+		if( !( get(id1,id2,ide) ) ){		// If the entry already exists, just get the edge ID; new edge otherwise
 			max_id_++;
-            inds_.push_back(sub2ind(id1_s,id2_s));
-			if(id1<id2){
-                edgeIDs_.push_back(max_id_);
+			if(id1_s+1>n){
+				resize(id1_s+1);			// If the matrix is too small, enlarge it
+			}
+			if(id1>=id2){
+				mat_.at(id1).at(id2)=max_id_;
 			} else {
-                edgeIDs_.push_back(-max_id_);
+				mat_.at(id2).at(id1)=-max_id_;
 			}
 			ide=max_id_;
 		}
@@ -118,9 +116,12 @@ void adjacencyMatrix::del(int id1,int id2){
  * \param[in] id1 ID of the first node
  * \param[in] id2 ID of the second node
  */
-	int ind=sub2ind(id1,id2);
-	inds_.erase (inds_.begin()+ind-1);
-	edgeIDs_.erase (edgeIDs_.begin()+ind-1);
+	int n=size();
+	int id1_s=max(id1,id2);
+	int id2_s=min(id1,id2);
+	if ( (id2_s>=0) && (id1_s<n-1) ){
+		mat_.at(id1_s).at(id2_s)=0;
+	}
 }
 
 
@@ -128,14 +129,7 @@ int adjacencyMatrix::size(){
 /**
  * Gets the size of the adjacency matrix.
  */
-    if(inds_.size()==0){
-        return 0;
-    }else{
-        int maxInd = *max_element(inds_.begin(), inds_.end());
-        int i,j;
-        ind2sub(i,j,maxInd);
-        return j+1;
-    }
+    return mat_.size();
 }
 
 void adjacencyMatrix::print(){
@@ -143,20 +137,14 @@ void adjacencyMatrix::print(){
  * Prints the adjacency matrix
  */
     int n=size();
-	int ide;
+	int id;
 	for(int i=0;i<n;i++){
 		for(int j=0;j<n;j++){
-			get(i,j,ide);
-			cout<<ide<<"\t";
+			get(i,j,id);
+			cout<<id<<"\t";
 		}
 		cout<<endl;
 	}
-//    for(int k=0;k<edgeIDs_.size();k++){
-//        int i,j;
-//        ind2sub(i,j,inds_.at(k));
-//        int ind=sub2ind(i,j);
-//        cout<<i<<"\t"<<j<<"\t"<<ind<<"\t"<<inds_.at(k)<<"\t"<<edgeIDs_.at(k)<<endl;
-//    }
 }
 
 adjacencyMatrix::~adjacencyMatrix()

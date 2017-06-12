@@ -7,12 +7,12 @@ using namespace std;
 
 
 bool findInVect(vector<int> vect, int value, int& idx){
-    idx = std::distance( vect.begin(),std::find(vect.begin(), vect.end(), value));
-            cout<<"idx="<<idx<<"\n";
-            cout<<"n="<<vect.size()<<"\n";
-    if(idx == vect.size()){
+    std::vector<int>::iterator it;
+    it = find (vect.begin(), vect.end(), value);
+    if (it == vect.end()){
         return false;
     }else{
+        idx=it-vect.begin();
         return true;
     }
 }
@@ -58,14 +58,12 @@ bool adjacencyMatrix::get(int id1, int id2, int& ide){
  * Gets the id of the edge connecting two nodes in the graph. Returns true if the edge exists, false otherwise.
  * \param[in]   id1 ID of the first node
  * \param[in]   id2 ID of the second node
- * \param[out]  ide edge ID, if it exists in the adjacency matrix
+ * \param[out]  ide edge ID, if it exists in the adjacency matrix (0 otherwise)
  */
 	int id1_s=min(id1,id2);
 	int id2_s=max(id1,id2);
-	int n=size();
 	if( (id1_s<0) || (id1==id2) ){
 		ide=0;
-		return false;
 	} else {
         int i;
         int ind=sub2ind(id1_s,id2_s);
@@ -75,10 +73,14 @@ bool adjacencyMatrix::get(int id1, int id2, int& ide){
             }else{
                 ide=-edgeIDs_.at(i);
             }
-            return true;
         } else {
-            return false;
+            ide=0;
         }
+	}
+	if(ide==0){
+        return false;
+	}else{
+        return true;
 	}
 }
 
@@ -90,16 +92,15 @@ int adjacencyMatrix::add(int id1,int id2){
  * \param[in] id2 ID of the second node
  */
 	int ide;
-	int n=size();
 	int id1_s=min(id1,id2);
 	int id2_s=max(id1,id2);
-	if ( (id2_s<0) || (id1==id2) ){// Any negative input index, or trying to add self loop (forbidden in skew-matrices)
+	if ( (id1_s<0) || (id1==id2) ){ // Any negative input index, or trying to add self loop (forbidden in skew-matrices)
 		max_id_++;
 		ide=max_id_;
-	} else {								// Both positive and different to each other
-		if( !( get(id1,id2,ide) ) ){		// If the entry already exists, just get the edge ID; new edge otherwise
+	} else {                        // Both positive and different to each other
+		if( !( get(id1,id2,ide) ) ){    // If the entry already exists, just get the edge ID; new edge otherwise
 			max_id_++;
-            inds_.push_back(sub2ind(id1,id2));
+            inds_.push_back(sub2ind(id1_s,id2_s));
 			if(id1<id2){
                 edgeIDs_.push_back(max_id_);
 			} else {
@@ -145,11 +146,17 @@ void adjacencyMatrix::print(){
 	int ide;
 	for(int i=0;i<n;i++){
 		for(int j=0;j<n;j++){
-			get(i,j,ide);
+			get(i+1,j+1,ide);
 			cout<<ide<<"\t";
 		}
 		cout<<endl;
 	}
+//    for(int k=0;k<edgeIDs_.size();k++){
+//        int i,j;
+//        ind2sub(i,j,inds_.at(k));
+//        int ind=sub2ind(i,j);
+//        cout<<i<<"\t"<<j<<"\t"<<ind<<"\t"<<inds_.at(k)<<"\t"<<edgeIDs_.at(k)<<endl;
+//    }
 }
 
 adjacencyMatrix::~adjacencyMatrix()

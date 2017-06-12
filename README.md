@@ -17,10 +17,6 @@ Just put the `.h` and `.cpp` files in the working directory, and add the followi
 ### Create a new instance of adjacency matrix
 
     adjacencyMatrix adj_mat;
-    
-Note that the size of the matrix is not mandatory here, since it will be dynamically computed (see below). If the size of the matrix is already known, it can passed to the constructor:
-
-    adjacencyMatrix adj_mat(7);
 
 ### Add a new entry in the adjacency matrix
 

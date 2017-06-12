@@ -20,15 +20,15 @@ bool findInVect(vector<int> vect, int value, int& idx){
 int sub2ind(int i, int j){
     int ind;
     if(i<j){
-        ind=j*(j-3)/2+i+1;
+        ind=j*(j-1)/2+i;
     }else{
-        ind=i*(i-3)/2+j+1;
+        ind=i*(i-1)/2+j;
     }
     return ind;
 }
 
 void ind2sub(int& i, int& j, int ind){
-    j=floor(1.5+sqrt(8.0*ind-7.0)/2);
+    j=floor(0.5+sqrt(8.0*ind+1)/2);
     i=ind-(j*(j-3)/2+1);
 }
 
@@ -134,7 +134,7 @@ int adjacencyMatrix::size(){
         int maxInd = *max_element(inds_.begin(), inds_.end());
         int i,j;
         ind2sub(i,j,maxInd);
-        return j;
+        return j+1;
     }
 }
 
@@ -146,7 +146,7 @@ void adjacencyMatrix::print(){
 	int ide;
 	for(int i=0;i<n;i++){
 		for(int j=0;j<n;j++){
-			get(i+1,j+1,ide);
+			get(i,j,ide);
 			cout<<ide<<"\t";
 		}
 		cout<<endl;

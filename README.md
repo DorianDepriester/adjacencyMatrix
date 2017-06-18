@@ -9,7 +9,9 @@ The original graph consists in nodes (aka vertices), connected to others by a se
 
 ### Example
 Here is an example graph:
+
 ![Example graph](https://i1.wp.com/blog.dorian-depriester.fr/wp-content/uploads/2017/06/Graphe.png?resize=150%2C150 "Example graph")
+
 Its consists in vertices (rounded nodes) and oriented edges (arrows). The corresponding adjacency matrix is:
 
 ![Adjacency matrix](https://latex.codecogs.com/png.latex?%5Cinline%20A%3D%5Cbegin%7Bpmatrix%7D%200%20%26%201%20%260%20%26%200%5C%5C%20-1%20%26%200%20%26%202%20%26%20-4%5C%5C%200%20%26%20-2%20%26%200%20%26%20-3%5C%5C%200%20%26%204%20%26%203%20%26%200%20%5Cend%7Bpmatrix%7D "Adjacency matrix")

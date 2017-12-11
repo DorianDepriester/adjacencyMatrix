@@ -33,7 +33,7 @@ void adjacencyMatrix::resize(int n_new){
 			vector<int> bottom(i,0);
 			mat_.push_back(bottom);
 		}
-	} else if(n_new<n_old) {			// Shrink the matrix	
+	} else if(n_new<n_old) {			// Shrink the matrix
 		mat_.resize(n_new);
 		for(int i=0;i<n_new;i++){
 			mat_.at(i).resize(n_new-1);
@@ -145,6 +145,13 @@ void adjacencyMatrix::print(){
 		}
 		cout<<endl;
 	}
+}
+
+int adjacencyMatrix::nEdges(){
+/**
+ * Returns the number of edges
+ */
+    return max_id_;
 }
 
 adjacencyMatrix::~adjacencyMatrix()

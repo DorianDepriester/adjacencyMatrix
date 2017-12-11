@@ -44,6 +44,10 @@ class adjacencyMatrix
         /**
         * Returns the size of the adjacency matrix (number of columns).
         */
+        int nEdges();
+        /**
+        * Returns the number of edges
+        */
         void print();
         /**
         * Prints out the content of the adjacency matrix.
